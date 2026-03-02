@@ -4,6 +4,9 @@
 Today, we developed and deployed a modern, premium personal webpage for **Huan Chen**. The project involved creating a high-quality frontend and setting up a robust version control workflow with GitHub.
 
 **Live Demo:** [https://huanchen1107.github.io/0225DRL_DIC1/](https://huanchen1107.github.io/0225DRL_DIC1/)
+[https://gh-yuxi.github.io/L1-PersonalPage/]
+(https://gh-yuxi.github.io/L1-PersonalPage/)
+
 
 ![Homepage Screenshot](homepage.png)
 
