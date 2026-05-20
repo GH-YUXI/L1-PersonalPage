@@ -1,77 +1,324 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yu-Dian Chen | Personal Page</title>
-    <meta name="description" content="Personal single-page website for Huan Chen featuring a dynamic live clock.">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO / GitHub Pages meta ──────────────────── -->
+  <title>Yu-Dian Chen | Deep Reinforcement Learning</title>
+  <meta name="description" content="Yu-Dian Chen 的個人學習頁面，深度強化學習課程作品集與進度紀錄。">
+  <meta name="author"      content="Yu-Dian Chen">
+  <meta name="keywords"    content="Deep Reinforcement Learning, DRL, PPO, DQN, Actor-Critic, PyTorch, Yu-Dian Chen">
+
+  <!-- ── Open Graph (社群預覽卡) ─────────────────── -->
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Yu-Dian Chen | Deep Reinforcement Learning">
+  <meta property="og:description" content="深度強化學習課程個人頁面 — 課程進度、技術棧與專案作品。">
+  <!-- 部署後請將 YOUR-USERNAME 與 YOUR-REPO 替換為實際值 -->
+  <meta property="og:url"         content="https://YOUR-USERNAME.github.io/YOUR-REPO/">
+  <meta property="og:image"       content="https://YOUR-USERNAME.github.io/YOUR-REPO/preview.png">
+
+  <!-- ── Twitter Card ─────────────────────────────── -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Yu-Dian Chen | DRL">
+  <meta name="twitter:description" content="深度強化學習課程個人頁面">
+
+  <!-- ── Favicon (inline SVG → data URI, 零外部請求) ── -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23050e14'/><circle cx='16' cy='16' r='6' fill='none' stroke='%2300e6c8' stroke-width='2'/><circle cx='16' cy='16' r='2' fill='%2300e6c8'/></svg>">
+
+  <!-- ── Fonts ─────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- ── Stylesheet (相對路徑，GitHub Pages 安全) ──── -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="background-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
 
-    <main class="container">
-        <div class="glass-card">
-            <header class="hero">
-                <h1 id="name">Yu-Dian Chen</h1>
-                <p class="subtitle">Personal Portfolio & Space</p>
-            </header>
+  <!-- ════ BACKGROUND LAYER ════ -->
+  <div class="bg-grid"    aria-hidden="true"></div>
+  <div class="bg-glow glow-1" aria-hidden="true"></div>
+  <div class="bg-glow glow-2" aria-hidden="true"></div>
+  <div class="bg-glow glow-3" aria-hidden="true"></div>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
-            <section class="time-section">
-                <div class="time-display">
-                    <span id="clock" class="clock-digits">10:54:23</span>
-                    <span id="date" class="date-display">Wednesday, February 25, 2026</span>
-                </div>
-            </section>
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="container">
 
-            <footer class="footer">
-                <div class="status-indicator">
-                    <span class="dot"></span>
-                    Online
-                </div>
-            </footer>
+    <!-- ── HERO ─────────────────────────────────── -->
+    <section class="card hero-card" id="hero" aria-label="個人簡介">
+      <div class="hero-badge" role="status">
+        <span class="dot-pulse"></span>
+        <span>DRL Course · Active</span>
+      </div>
+
+      <h1 class="hero-name">
+        Yu-Dian<br><span class="accent">Chen</span>
+      </h1>
+      <p class="hero-sub">Deep Reinforcement Learning</p>
+      <p class="hero-desc">
+        深度強化學習課程 — 探索智能體如何在複雜環境中，<br>
+        透過試誤學習與策略最佳化，習得最佳行為策略。
+      </p>
+      <div class="hero-tags" role="list" aria-label="研究領域">
+        <span class="tag" role="listitem">Policy Gradient</span>
+        <span class="tag" role="listitem">Q-Learning</span>
+        <span class="tag" role="listitem">Actor-Critic</span>
+        <span class="tag" role="listitem">PPO</span>
+      </div>
+    </section>
+
+    <!-- ── LIVE CLOCK ────────────────────────────── -->
+    <section class="card clock-card" id="clock-section" aria-label="即時時鐘">
+      <div class="clock-label" aria-hidden="true">CURRENT TIME</div>
+      <div id="clock" class="clock-digits" aria-live="polite" aria-label="目前時間">00:00:00</div>
+      <div id="date"  class="clock-date"   aria-live="polite">載入中…</div>
+      <div class="clock-separator"></div>
+      <div class="clock-tz">
+        <span class="mono" aria-hidden="true">TZ</span>
+        <span id="timezone">Asia/Taipei</span>
+      </div>
+    </section>
+
+    <!-- ── ABOUT / COURSE ────────────────────────── -->
+    <section class="card about-card" id="about" aria-label="課程介紹">
+      <div class="section-label" aria-hidden="true">ABOUT THE COURSE</div>
+      <h2 class="section-title">深度強化學習</h2>
+      <p class="about-text">
+        本課程系統性介紹深度強化學習（Deep Reinforcement Learning, DRL）的核心理論與實務應用。
+        從 Markov Decision Process 基礎出發，逐步深入現代 Deep RL 演算法，
+        培養設計、訓練並評估智能體的完整能力，應用場景涵蓋遊戲 AI、機器人控制及資源排程最佳化。
+      </p>
+      <div class="course-stats" role="list" aria-label="課程統計">
+        <div class="stat" role="listitem">
+          <span class="stat-num" data-target="12" aria-label="12 個課程模組">0</span>
+          <span class="stat-label">課程模組</span>
         </div>
-    </main>
+        <div class="stat" role="listitem">
+          <span class="stat-num" data-target="8" aria-label="8 個實作專案">0</span>
+          <span class="stat-label">實作專案</span>
+        </div>
+        <div class="stat" role="listitem">
+          <span class="stat-num" data-target="5" aria-label="5 個核心演算法">0</span>
+          <span class="stat-label">核心演算法</span>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        function updateTime() {
-            const now = new Date();
-            
-            // Format time
-            const timeOptions = { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit', 
-                hour12: false 
-            };
-            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', timeOptions);
-            
-            // Format date
-            const dateOptions = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            document.getElementById('date').textContent = now.toLocaleDateString('en-US', dateOptions);
-        }
+    <!-- ── SKILLS ────────────────────────────────── -->
+    <section class="card skills-card" id="skills" aria-label="技術棧">
+      <div class="section-label" aria-hidden="true">SKILL MATRIX</div>
+      <h2 class="section-title">技術棧</h2>
+      <div class="skill-list">
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">Python / PyTorch</span>
+            <span class="skill-pct" aria-hidden="true">90%</span>
+          </div>
+          <div class="skill-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" aria-label="Python / PyTorch 熟練度 90%">
+            <div class="skill-fill" style="--w:90%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">強化學習理論</span>
+            <span class="skill-pct" aria-hidden="true">80%</span>
+          </div>
+          <div class="skill-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="強化學習理論 熟練度 80%">
+            <div class="skill-fill" style="--w:80%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">OpenAI Gym / Env 設計</span>
+            <span class="skill-pct" aria-hidden="true">75%</span>
+          </div>
+          <div class="skill-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="OpenAI Gym 熟練度 75%">
+            <div class="skill-fill" style="--w:75%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">神經網路架構設計</span>
+            <span class="skill-pct" aria-hidden="true">85%</span>
+          </div>
+          <div class="skill-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="神經網路架構設計 熟練度 85%">
+            <div class="skill-fill" style="--w:85%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">數學最佳化 / 梯度方法</span>
+            <span class="skill-pct" aria-hidden="true">70%</span>
+          </div>
+          <div class="skill-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="數學最佳化 熟練度 70%">
+            <div class="skill-fill" style="--w:70%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        // Initialize and update every second
-        updateTime();
-        setInterval(updateTime, 1000);
+    <!-- ── PROJECTS ──────────────────────────────── -->
+    <section class="card projects-card" id="projects" aria-label="課程專案">
+      <div class="section-label" aria-hidden="true">PROJECTS</div>
+      <h2 class="section-title">課程專案</h2>
+      <div class="project-grid">
 
-        // Entrance animation trigger
-        window.addEventListener('load', () => {
-            document.querySelector('.glass-card').classList.add('visible');
+        <article class="project-item">
+          <div class="project-icon" aria-hidden="true">01</div>
+          <div class="project-body">
+            <h3>CartPole DQN</h3>
+            <p>使用 Deep Q-Network 訓練智能體平衡倒立擺，實作 Experience Replay、Target Network 與 ε-greedy 探索策略。</p>
+            <div class="project-tags" aria-label="使用技術">
+              <span>DQN</span><span>OpenAI Gym</span><span>PyTorch</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item">
+          <div class="project-icon" aria-hidden="true">02</div>
+          <div class="project-body">
+            <h3>Atari Breakout — PPO</h3>
+            <p>Proximal Policy Optimization 應用於 Atari 遊戲環境，實作 CNN 視覺特徵提取、GAE 優勢估計與 Clipped Surrogate Loss。</p>
+            <div class="project-tags" aria-label="使用技術">
+              <span>PPO</span><span>CNN</span><span>GAE</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item">
+          <div class="project-icon" aria-hidden="true">03</div>
+          <div class="project-body">
+            <h3>Multi-Agent MARL</h3>
+            <p>多智能體協作場景，研究 Cooperative / Competitive 策略均衡、通訊協議設計與 MADDPG 中心化訓練去中心化執行架構。</p>
+            <div class="project-tags" aria-label="使用技術">
+              <span>MARL</span><span>MADDPG</span><span>CTDE</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ── FOOTER ────────────────────────────────── -->
+    <footer class="footer-bar" role="contentinfo">
+      <div class="footer-left">
+        <span class="dot-online" aria-hidden="true"></span>
+        <span class="mono">System online</span>
+      </div>
+      <div class="footer-center mono" id="footer-time" aria-hidden="true">--:--:--</div>
+      <div class="footer-right mono">DRL · 2026</div>
+    </footer>
+
+  </main><!-- /.container -->
+
+  <!-- ════ SCRIPTS ════ -->
+  <script>
+    /* ── 1. Live clock ─────────────────────────────── */
+    function updateTime() {
+      const now = new Date();
+      const timeOpts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+      const dateOpts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('clock').textContent       = now.toLocaleTimeString('en-US', timeOpts);
+      document.getElementById('date').textContent        = now.toLocaleDateString('en-US', dateOpts);
+      document.getElementById('footer-time').textContent = now.toLocaleTimeString('en-US', timeOpts);
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      document.getElementById('timezone').textContent    = tz || 'Asia/Taipei';
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    /* ── 2. Particle network canvas ────────────────── */
+    (function () {
+      const canvas = document.getElementById('particle-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W, H;
+      const PARTICLE_COUNT = 55;
+      const LINK_DIST      = 110;
+
+      const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+        x:  Math.random() * window.innerWidth,
+        y:  Math.random() * window.innerHeight,
+        r:  Math.random() * 1.5 + 0.3,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        a:  Math.random() * 0.5 + 0.15,
+      }));
+
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        /* dots */
+        particles.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0,230,200,${p.a})`;
+          ctx.fill();
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0) p.x = W; else if (p.x > W) p.x = 0;
+          if (p.y < 0) p.y = H; else if (p.y > H) p.y = 0;
         });
-    </script>
+
+        /* connecting lines */
+        for (let i = 0; i < particles.length - 1; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx   = particles[i].x - particles[j].x;
+            const dy   = particles[i].y - particles[j].y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < LINK_DIST) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(0,230,200,${0.08 * (1 - dist / LINK_DIST)})`;
+              ctx.lineWidth   = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    /* ── 3. Count-up on scroll ─────────────────────── */
+    function countUp(el, target, duration) {
+      let current = 0;
+      const step  = target / (duration / 16);
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) { el.textContent = target; clearInterval(timer); }
+        else                   { el.textContent = Math.floor(current); }
+      }, 16);
+    }
+
+    const statsObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll('.stat-num').forEach(el =>
+          countUp(el, parseInt(el.dataset.target, 10), 900)
+        );
+        statsObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.4 });
+
+    document.querySelectorAll('.about-card').forEach(el => statsObserver.observe(el));
+
+    /* ── 4. Staggered entrance animation ───────────── */
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.card').forEach((el, i) => {
+        el.style.animationDelay = `${i * 0.1}s`;
+        el.classList.add('card-visible');
+      });
+    });
+  </script>
 </body>
 </html>
